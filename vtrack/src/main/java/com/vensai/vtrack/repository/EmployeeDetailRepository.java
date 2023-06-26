@@ -13,4 +13,6 @@ public interface EmployeeDetailRepository extends JpaRepository<EmployeeDetails,
 	EmployeeDetails findByEmpId(String EmpID);
 	
 	Optional<EmployeeDetails> findByEmail(String Email);
+
+	Optional<EmployeeDetails> findByResetToken(String string);
 }

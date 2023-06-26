@@ -20,7 +20,12 @@ public class EmployeeDetailsService implements UserDetailsService{
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		
 	    Optional<EmployeeDetails> userinfo = employeedetailRepo.findByEmail(username);
+	    if (userinfo ==null) {
+	    	System.out.println("Search with UserID");
+	    	userinfo =	Optional.of(employeedetailRepo.findByEmpId(username));
+	    }
 	    System.out.println("object present: " + userinfo.isPresent());
 	    
 	    return userinfo.map(EmloyeeLoginDetails::new).orElseThrow(() -> new UsernameNotFoundException("User not found in the database: " + username));

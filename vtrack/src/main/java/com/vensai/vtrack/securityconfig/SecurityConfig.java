@@ -52,7 +52,7 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain filterchain(HttpSecurity http) throws Exception {
 		http.cors(cors -> cors.configure(http)).csrf(csrf -> csrf.disable()).authorizeHttpRequests(
-				auth -> auth.requestMatchers("/login", "/updatepassword", "/getPassword/{EmployeeID}").permitAll())
+				auth -> auth.requestMatchers("/login", "/updatepassword", "/getPassword/{EmployeeID}","/forgotpassword/{email}","/resetpassword").permitAll())
 				.authorizeHttpRequests(auth -> auth.requestMatchers("/getdetails/{emailId}", "/login").permitAll())
 				.authorizeHttpRequests(auth -> auth.requestMatchers("/home", "/getdata").authenticated());
 

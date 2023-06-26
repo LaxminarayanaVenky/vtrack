@@ -19,7 +19,6 @@ public class EmployeeDetails {
 	private String empId;
 	private String empFirstName;
 	private String empLastName;
-	@Column(name ="emp_password_updated_v1")
 	private String empPassword;
 	private String gender;
 	private Date doj;
@@ -44,8 +43,8 @@ public class EmployeeDetails {
 	private String empTimesheetRequest;
 	private String mgrTimesheetRequest;
 	private String acCode;
-	private String empPasswordUpdated;
-
+	
+	private String resetToken;
 	// Constructors
 	public EmployeeDetails() {
 	}
@@ -54,7 +53,7 @@ public class EmployeeDetails {
 			Date doj, String email, String managerId, String currentDesignation, String contactNumber, String role,
 			String departmentId, String status, String theme, String empMiddleName, String location, String branch,
 			String extnsn, String projectName, String modulesAccess, String empPhoto, String imageName, byte[] image,
-			String imageId, String empTimesheetRequest, String mgrTimesheetRequest, String acCode,String empPasswordUpdated) {
+			String imageId, String empTimesheetRequest, String mgrTimesheetRequest, String acCode,String resetToken) {
 		this.empId = empId;
 		this.empFirstName = empFirstName;
 		this.empLastName = empLastName;
@@ -82,7 +81,8 @@ public class EmployeeDetails {
 		this.empTimesheetRequest = empTimesheetRequest;
 		this.mgrTimesheetRequest = mgrTimesheetRequest;
 		this.acCode = acCode;
-		this.empPasswordUpdated =  empPasswordUpdated;
+//		this.empPasswordUpdated =  empPasswordUpdated;
+		this.resetToken =resetToken;
 	}
 
 	// Getters and Setters
@@ -112,6 +112,14 @@ public class EmployeeDetails {
 
 	public String getEmpPassword() {
 		return empPassword;
+	}
+
+	public String getResetToken() {
+		return resetToken;
+	}
+
+	public void setResetToken(String resetToken) {
+		this.resetToken = resetToken;
 	}
 
 	public void setEmpPassword(String empPassword) {
@@ -302,13 +310,7 @@ public class EmployeeDetails {
 		this.acCode = acCode;
 	}
 
-	public String getEmpPasswordUpdated() {
-		return empPasswordUpdated;
-	}
-
-	public void setEmpPasswordUpdated(String empPasswordUpdated) {
-		this.empPasswordUpdated = empPasswordUpdated;
-	}
+	
 
 	@Override
 	public String toString() {

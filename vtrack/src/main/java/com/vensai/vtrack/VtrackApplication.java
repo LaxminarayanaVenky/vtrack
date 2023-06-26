@@ -8,6 +8,7 @@ public class VtrackApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(VtrackApplication.class, args);
+		
 	}
 
 }

@@ -56,11 +56,15 @@ public class Vtrackrestcontroller {
 
 	}
 
-	@CrossOrigin(origins = "http://localhost:3000")
+	@CrossOrigin(origins = "http://192.168.2.148:3000")
 	@PostMapping("/login")
 	public String getEmployeedata(@RequestBody AuthorizationRequest authrequest) {
-		System.out.println("Auth request entred");
-		
+
+		boolean isEmail = authrequest.getEmail().contains("@");
+		if(!isEmail) {
+			authrequest.setEmail(vtrackservices.getEmployeebyId(authrequest.getEmail()).getEmail());
+//			System.out.println(authrequest);
+		}
 		Authentication authenticate = authManager.authenticate(
 				new UsernamePasswordAuthenticationToken(authrequest.getEmail(), authrequest.getPassword()));
 		System.out.println(authenticate);
