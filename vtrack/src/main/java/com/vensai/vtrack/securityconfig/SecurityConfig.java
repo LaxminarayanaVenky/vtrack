@@ -13,7 +13,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.vensai.vtrack.Jwt.JwtRequestFilter;
 import com.vensai.vtrack.employeeservices.EmployeeDetailsService;
 
 @Configuration
@@ -34,20 +36,37 @@ public class SecurityConfig {
 
 	}
 
-//	 Authentication manager
-	@Bean
-	public SecurityFilterChain securityfilterchain(HttpSecurity http) throws Exception {
+////	 Authentication manager
+//	@Bean
+//	public SecurityFilterChain securityfilterchain(HttpSecurity http) throws Exception {
+//
+//		return http.csrf().disable().authorizeHttpRequests()
+//				.requestMatchers("/login", "/updatepassword", "/getdetails/{emailId}", "/getdata",
+//						"/getPassword/{EmployeeID}")
+//				.permitAll().and().authorizeHttpRequests().requestMatchers("/").permitAll().and()
+//				.authorizeHttpRequests().requestMatchers("/home").authenticated().and().authorizeHttpRequests()
+//				.requestMatchers("/admin").authenticated().and().build();
+//
+//	}
 
-		return http.csrf().disable().authorizeHttpRequests().requestMatchers("/login","/updatepassword", "/getdetails/{emailId}","/getdata","/getPassword/{EmployeeID}")
-				.permitAll().and().authorizeHttpRequests().requestMatchers("/")
-				.permitAll().and().authorizeHttpRequests().requestMatchers("/home").authenticated().and()
-				.authorizeHttpRequests().requestMatchers("/admin").authenticated().and().build();
+	@Bean
+	public SecurityFilterChain filterchain(HttpSecurity http) throws Exception {
+		http.cors(cors -> cors.configure(http)).csrf(csrf -> csrf.disable()).authorizeHttpRequests(
+				auth -> auth.requestMatchers("/login", "/updatepassword", "/getPassword/{EmployeeID}","/forgotpassword/{email}","/resetpassword").permitAll())
+				.authorizeHttpRequests(auth -> auth.requestMatchers("/getdetails/{emailId}", "/login").permitAll())
+				.authorizeHttpRequests(auth -> auth.requestMatchers("/home", "/getdata").authenticated());
+
+		http.authenticationProvider(authenticationProvider());
+
+		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+		return http.build();
 
 	}
-	
-	
-	
-	
+
+	@Bean
+	public JwtRequestFilter authenticationJwtTokenFilter() {
+		return new JwtRequestFilter();
+	}
 
 	@Bean
 	public AuthenticationProvider authenticationProvider() {

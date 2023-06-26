@@ -21,7 +21,7 @@ import com.vensai.vtrack.securityconfig.JwtService;
 import com.vensai.vtrack.services.Vtrackservices;
 import com.vensai.vtrack.udt.employee.EmployeeDetails;
 
-@CrossOrigin
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class Vtrackrestcontroller {
 
@@ -46,7 +46,9 @@ public class Vtrackrestcontroller {
 	@GetMapping("/getdata")
 	public Optional<EmployeeDetails> getDetailswithToken(@RequestHeader("Authorization") String jwtToken) {
 
-		String Email = jwtservice.validateToken(jwtToken);
+		System.out.println("Data request entred");
+		String cleantoken = jwtToken.substring(6);
+		String Email = jwtservice.validateToken(cleantoken);
 		
 		System.out.println(Email + "Email Extracted from the token");
 
@@ -54,10 +56,15 @@ public class Vtrackrestcontroller {
 
 	}
 
+	@CrossOrigin(origins = "http://192.168.2.148:3000")
 	@PostMapping("/login")
 	public String getEmployeedata(@RequestBody AuthorizationRequest authrequest) {
-		
-		
+
+		boolean isEmail = authrequest.getEmail().contains("@");
+		if(!isEmail) {
+			authrequest.setEmail(vtrackservices.getEmployeebyId(authrequest.getEmail()).getEmail());
+//			System.out.println(authrequest);
+		}
 		Authentication authenticate = authManager.authenticate(
 				new UsernamePasswordAuthenticationToken(authrequest.getEmail(), authrequest.getPassword()));
 		System.out.println(authenticate);

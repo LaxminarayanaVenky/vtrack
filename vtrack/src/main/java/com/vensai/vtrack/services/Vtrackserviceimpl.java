@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.vensai.vtrack.Utils.UpgradePassword;
 import com.vensai.vtrack.repository.EmployeeDetailRepository;
 import com.vensai.vtrack.udt.employee.EmployeeDetails;
 
@@ -48,9 +47,9 @@ public class Vtrackserviceimpl implements Vtrackservices {
 		List<EmployeeDetails> EmployeesList = employeedetailRepo.findAll();
 		for(EmployeeDetails emp :EmployeesList) {
 //			emp.setEmpPassword());
-			emp.setEmpPasswordUpdated(encoder.encode(UpgradePassword.decrypt(emp.getEmpPassword())));
+			emp.setEmpPassword(encoder.encode(emp.getEmpId()));
 			employeedetailRepo.save(emp);
-			System.out.println("Passowrd Upgraded successfully for"+ emp.getEmpId());
+			System.out.println("Passowrd Upgraded successfully for "+ emp.getEmpId());
 		}
 		
 		
